@@ -48,7 +48,6 @@ io.on("connection", (socket) => {
   });
 });
 
-io.attach(app);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
