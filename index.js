@@ -1,18 +1,24 @@
-require('dotenv').config()
+const express = require("express");
 const { Server } = require("socket.io");
 
-const PORT = process.env.PORT;
-console.log(PORT);
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 const io = new Server(PORT, {
-  cors: true,
+  cors: {
+    origin: "https://blaxat.github.io/VideoChat/",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
 });
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
 
 io.on("connection", (socket) => {
-  console.log(`Socket Connected`, socket.id);
   socket.on("room:join", (data) => {
     const { email, room } = data;
     emailToSocketIdMap.set(email, socket.id);
@@ -32,12 +38,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on("peer:nego:needed", ({ to, offer }) => {
-    console.log("peer:nego:needed", offer);
     io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
   });
 
   socket.on("peer:nego:done", ({ to, ans }) => {
-    console.log("peer:nego:done", ans);
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
+});
+
+io.attach(app);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
