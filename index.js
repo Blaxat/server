@@ -1,12 +1,14 @@
-const express = require("express");
 const { Server } = require("socket.io");
-
-require('dotenv').config();
+const express = require("express");
+const http = require("http");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const server = http.createServer(app);
 
-const io = new Server(PORT, {
+const PORT = process.env.PORT || 3000;
+console.log(PORT);
+
+const io = new Server(server, {
   cors: {
     origin: "https://blaxat.github.io/VideoChat/",
     methods: ["GET", "POST"],
