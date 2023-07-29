@@ -10,7 +10,7 @@ console.log(PORT);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://blaxat.github.io/VideoChat/",
+    origin: "https://blaxat.github.io",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
