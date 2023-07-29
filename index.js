@@ -1,17 +1,12 @@
-const express = require("express");
-const http = require("http");
+require('dotenv').config()
 const { Server } = require("socket.io");
-const cors = require("cors");
-
-const app = express();
-const server = http.createServer(app);
 
 const PORT = process.env.PORT || 3000;
 console.log(PORT);
 
-app.use(cors());
-
-const io = new Server(server);
+const io = new Server(PORT, {
+  cors: true,
+});
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
