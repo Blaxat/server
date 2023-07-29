@@ -5,7 +5,12 @@ const PORT = process.env.PORT;
 console.log(PORT);
 
 const io = new Server(PORT, {
-  cors: true,
+  cors: {
+    origin: "https://blaxat.github.io",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Authorization"],
+    credentials: true,
+  },
 });
 
 const emailToSocketIdMap = new Map();
